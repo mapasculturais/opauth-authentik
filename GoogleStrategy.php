@@ -35,14 +35,14 @@ class GoogleStrategy extends OpauthStrategy{
 	 */
 	public $defaults = array(
 		'redirect_uri' => '{complete_url_to_strategy}oauth2callback',
-		'scope' => 'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email'
+		'scope' => 'public_profile email full_name'
 	);
 	
 	/**
 	 * Auth request
 	 */
 	public function request(){
-		$url = 'https://accounts.google.com/o/oauth2/auth';
+		$url = 'https://meu.rs.gov.br/oauth/v2/auth';
 		$params = array(
 			'client_id' => $this->strategy['client_id'],
 			'redirect_uri' => $this->strategy['redirect_uri'],
@@ -63,7 +63,7 @@ class GoogleStrategy extends OpauthStrategy{
 	public function oauth2callback(){
 		if (array_key_exists('code', $_GET) && !empty($_GET['code'])){
 			$code = $_GET['code'];
-			$url = 'https://accounts.google.com/o/oauth2/token';
+			$url = 'https://meu.rs.gov.br/oauth/v2/token';
 			$params = array(
 				'code' => $code,
 				'client_id' => $this->strategy['client_id'],
@@ -93,11 +93,11 @@ class GoogleStrategy extends OpauthStrategy{
 					$this->auth['credentials']['refresh_token'] = $results->refresh_token;
 				}
 				
-				$this->mapProfile($userinfo, 'name', 'info.name');
-				$this->mapProfile($userinfo, 'email', 'info.email');
-				$this->mapProfile($userinfo, 'given_name', 'info.first_name');
-				$this->mapProfile($userinfo, 'family_name', 'info.last_name');
-				$this->mapProfile($userinfo, 'picture', 'info.image');
+				$this->mapProfile($userinfo, 'name', 'first_name');
+				$this->mapProfile($userinfo, 'email', 'email');
+				$this->mapProfile($userinfo, 'given_name', 'first_name');
+				$this->mapProfile($userinfo, 'family_name', 'surname');
+				$this->mapProfile($userinfo, 'picture', 'profile_picture_url');
 				
 				$this->callback();
 			}
@@ -131,7 +131,7 @@ class GoogleStrategy extends OpauthStrategy{
 	 * @return array Parsed JSON results
 	 */
 	private function userinfo($access_token){
-		$userinfo = $this->serverGet('https://www.googleapis.com/oauth2/v1/userinfo', array('access_token' => $access_token), null, $headers);
+		$userinfo = $this->serverGet('https://meu.rs.gov.br/api/v1/person', array('access_token' => $access_token), null, $headers);
 		if (!empty($userinfo)){
 			return $this->recursiveGetObjectVars(json_decode($userinfo));
 		}
