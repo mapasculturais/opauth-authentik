@@ -1,23 +1,23 @@
 <?php
 /**
- * LoginCidadao strategy for Opauth
- * based on https://developers.LoginCidadao.com/accounts/docs/OAuth2
+ * logincidadao strategy for Opauth
+ * based on https://developers.logincidadao.com/accounts/docs/OAuth2
  *
  * More information on Opauth: http://opauth.org
  *
  * @copyright    Copyright © 2012 U-Zyn Chua (http://uzyn.com)
  * @link         http://opauth.org
- * @package      Opauth.LoginCidadaoStrategy
+ * @package      Opauth.logincidadaoStrategy
  * @license      MIT License
  */
 
 /**
- * LoginCidadao strategy for Opauth
- * based on https://developers.LoginCidadao.com/accounts/docs/OAuth2
+ * logincidadao strategy for Opauth
+ * based on https://developers.logincidadao.com/accounts/docs/OAuth2
  *
- * @package			Opauth.LoginCidadao
+ * @package			Opauth.logincidadao
  */
-class LoginCidadaoStrategy extends OpauthStrategy{
+class logincidadaoStrategy extends OpauthStrategy{
 
 	/**
 	 * Compulsory config keys, listed as unassociative arrays
@@ -125,7 +125,7 @@ class LoginCidadaoStrategy extends OpauthStrategy{
 	}
 
 	/**
-	 * Queries LoginCidadao API for user info
+	 * Queries logincidadao API for user info
 	 *
 	 * @param string $access_token
 	 * @return array Parsed JSON results
