@@ -1,7 +1,7 @@
 <?php
 /**
  * LoginCidadao strategy for Opauth
- * based on https://developers.loginCidadao.com/accounts/docs/OAuth2
+ * based on https://developers.LoginCidadao.com/accounts/docs/OAuth2
  *
  * More information on Opauth: http://opauth.org
  *
@@ -13,7 +13,7 @@
 
 /**
  * LoginCidadao strategy for Opauth
- * based on https://developers.loginCidadao.com/accounts/docs/OAuth2
+ * based on https://developers.LoginCidadao.com/accounts/docs/OAuth2
  *
  * @package			Opauth.LoginCidadao
  */

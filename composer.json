@@ -1,7 +1,7 @@
 {
-	"name": "opauth/loginCidadao",
+	"name": "opauth/LoginCidadao",
 	"description": "Login Cidadão strategy for Opauth",
-	"keywords": ["authentication","auth","loginCidadao"],
+	"keywords": ["authentication","auth","LoginCidadao"],
 	"homepage": "http://opauth.org",
 	"license": "MIT",
 	"authors": [
