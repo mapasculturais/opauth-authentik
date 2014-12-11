@@ -1,23 +1,23 @@
 <?php
 /**
- * Google strategy for Opauth
- * based on https://developers.google.com/accounts/docs/OAuth2
+ * LoginCidadao strategy for Opauth
+ * based on https://developers.loginCidadao.com/accounts/docs/OAuth2
  *
  * More information on Opauth: http://opauth.org
  *
  * @copyright    Copyright © 2012 U-Zyn Chua (http://uzyn.com)
  * @link         http://opauth.org
- * @package      Opauth.GoogleStrategy
+ * @package      Opauth.LoginCidadaoStrategy
  * @license      MIT License
  */
 
 /**
- * Google strategy for Opauth
- * based on https://developers.google.com/accounts/docs/OAuth2
+ * LoginCidadao strategy for Opauth
+ * based on https://developers.loginCidadao.com/accounts/docs/OAuth2
  *
- * @package			Opauth.Google
+ * @package			Opauth.LoginCidadao
  */
-class GoogleStrategy extends OpauthStrategy{
+class LoginCidadaoStrategy extends OpauthStrategy{
 
 	/**
 	 * Compulsory config keys, listed as unassociative arrays
@@ -42,7 +42,7 @@ class GoogleStrategy extends OpauthStrategy{
 	 * Auth request
 	 */
 	public function request(){
-		$url = $this->strategy['host'].$this->strategy['auth_path'];
+		$url = 'https://meu.rs.gov.br/oauth/v2/auth';
 		$params = array(
 			'client_id' => $this->strategy['client_id'],
 			'redirect_uri' => $this->strategy['redirect_uri'],
@@ -63,7 +63,7 @@ class GoogleStrategy extends OpauthStrategy{
 	public function oauth2callback(){
 		if (array_key_exists('code', $_GET) && !empty($_GET['code'])){
 			$code = $_GET['code'];
-			$url = $this->strategy['host'].$this->strategy['token_path'];
+			$url = 'https://meu.rs.gov.br/oauth/v2/token';
 			$params = array(
 				'code' => $code,
 				'client_id' => $this->strategy['client_id'],
@@ -125,13 +125,13 @@ class GoogleStrategy extends OpauthStrategy{
 	}
 
 	/**
-	 * Queries Google API for user info
+	 * Queries LoginCidadao API for user info
 	 *
 	 * @param string $access_token
 	 * @return array Parsed JSON results
 	 */
 	private function userinfo($access_token){
-		$userinfo = $this->serverGet($this->strategy['host'].$this->strategy['userinfo_path'], array('access_token' => $access_token), null, $headers);
+		$userinfo = $this->serverGet('https://meu.rs.gov.br/api/v1/person', array('access_token' => $access_token), null, $headers);
 		if (!empty($userinfo)){
 			return $this->recursiveGetObjectVars(json_decode($userinfo));
 		}
