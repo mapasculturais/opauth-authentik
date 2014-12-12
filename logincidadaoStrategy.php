@@ -131,7 +131,7 @@ class logincidadaoStrategy extends OpauthStrategy{
 	 * @return array Parsed JSON results
 	 */
 	private function userinfo($access_token){
-		$userinfo = $this->serverGet('https://meu.rs.gov.br/api/v1/person', array('access_token' => $access_token), null, $headers);
+		$userinfo = $this->serverGet('https://meu.rs.gov.br/api/v1/person.json', array('access_token' => $access_token), null, $headers);
 		if (!empty($userinfo)){
 			return $this->recursiveGetObjectVars(json_decode($userinfo));
 		}
