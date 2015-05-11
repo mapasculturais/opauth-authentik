@@ -40,7 +40,7 @@ Required parameters:
 ```
 
 Optional parameters:
-`scope`, `state`, `access_type`, `approval_prompt`
+`auth_endpoint`, `token_endpoint`, `user_info_endpoint`, `redirect_uri`, `scope`, `state`, `access_type`, `approval_prompt`
 
 
 References
