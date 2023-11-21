@@ -1,23 +1,23 @@
 <?php
 /**
- * logincidadao strategy for Opauth
- * based on https://developers.logincidadao.com/accounts/docs/OAuth2
+ * authentik strategy for Opauth
+ * based on https://developers.authentik.com/accounts/docs/OAuth2
  *
  * More information on Opauth: http://opauth.org
  *
  * @copyright    Copyright © 2012 U-Zyn Chua (http://uzyn.com)
  * @link         http://opauth.org
- * @package      Opauth.logincidadaoStrategy
+ * @package      Opauth.authentikStrategy
  * @license      MIT License
  */
 
 /**
- * logincidadao strategy for Opauth
- * based on https://developers.logincidadao.com/accounts/docs/OAuth2
+ * authentik strategy for Opauth
+ * based on https://developers.authentik.com/accounts/docs/OAuth2
  *
- * @package			Opauth.logincidadao
+ * @package			Opauth.authentik
  */
-class logincidadaoStrategy extends OpauthStrategy
+class authentikStrategy extends OpauthStrategy
 {
     /**
      * Compulsory config keys, listed as unassociative arrays
@@ -36,10 +36,10 @@ class logincidadaoStrategy extends OpauthStrategy
      */
     public $defaults = array(
         'redirect_uri' => '{complete_url_to_strategy}oauth2callback',
-        'scope' => 'public_profile email full_name',
-        'auth_endpoint' => 'https://meu.rs.gov.br/oauth/v2/auth',
-        'token_endpoint' => 'https://meu.rs.gov.br/oauth/v2/token',
-        'user_info_endpoint' => 'https://meu.rs.gov.br/api/v1/person.json'
+        'scope' => 'profile email',
+        'auth_endpoint' => 'https://meu.authentik/application/o/authorize/',
+        'token_endpoint' => 'https://meu.authentik/application/o/token/',
+        'user_info_endpoint' => 'https://meu.authentik/application/o/userinfo/'
     );
 
     /**
@@ -138,7 +138,7 @@ class logincidadaoStrategy extends OpauthStrategy
     }
 
     /**
-     * Queries logincidadao API for user info
+     * Queries authentik API for user info
      *
      * @param string $access_token
      * @return array Parsed JSON results
