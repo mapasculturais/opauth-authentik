@@ -17,7 +17,7 @@
 	],
 	"require": {
 		"php": ">=5.2.0",
-		"opauth/opauth": ">=0.2.0"
+		"opauth/opauth": "*"
 	},
 	"autoload": {
 		"psr-0": {
