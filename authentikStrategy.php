@@ -1,7 +1,7 @@
 <?php
 /**
  * authentik strategy for Opauth
- * based on https://developers.authentik.com/accounts/docs/OAuth2
+ * based on https://goauthentik.io/docs/providers/oauth2/
  *
  * More information on Opauth: http://opauth.org
  *
@@ -13,7 +13,7 @@
 
 /**
  * authentik strategy for Opauth
- * based on https://developers.authentik.com/accounts/docs/OAuth2
+ * based on https://goauthentik.io/docs/providers/oauth2/
  *
  * @package			Opauth.authentik
  */
@@ -22,7 +22,7 @@ class authentikStrategy extends OpauthStrategy
     /**
      * Compulsory config keys, listed as unassociative arrays
      */
-    public $expects = array('client_id', 'client_secret');
+    public $expects = array('client_id', 'client_secret', 'login_url');
 
     /**
      * Optional config keys, without predefining any default values.
@@ -36,10 +36,11 @@ class authentikStrategy extends OpauthStrategy
      */
     public $defaults = array(
         'redirect_uri' => '{complete_url_to_strategy}oauth2callback',
-        'scope' => 'profile email',
-        'auth_endpoint' => 'https://meu.authentik/application/o/authorize/',
-        'token_endpoint' => 'https://meu.authentik/application/o/token/',
-        'user_info_endpoint' => 'https://meu.authentik/application/o/userinfo/'
+        'scope' => 'openid profile email',
+        'login_url' => 'https://my.authentik',
+        'auth_endpoint' => '/application/o/authorize/',
+        'token_endpoint' => '/application/o/token/',
+        'user_info_endpoint' => '/application/o/userinfo/'
     );
 
     /**
@@ -54,7 +55,7 @@ class authentikStrategy extends OpauthStrategy
      */
     public function request()
     {
-        $url    = $this->strategy['auth_endpoint'];
+        $url    = $this->strategy['login_url'].$this->strategy['auth_endpoint'];
         $params = array(
             'client_id' => $this->strategy['client_id'],
             'redirect_uri' => $this->strategy['redirect_uri'],
@@ -79,7 +80,7 @@ class authentikStrategy extends OpauthStrategy
     {
         if (array_key_exists('code', $_GET) && !empty($_GET['code'])) {
             $code     = $_GET['code'];
-            $url      = $this->strategy['token_endpoint'];
+            $url      = $this->strategy['login_url'].$this->strategy['token_endpoint'];
             $params   = array(
                 'code' => $code,
                 'client_id' => $this->strategy['client_id'],
@@ -93,9 +94,9 @@ class authentikStrategy extends OpauthStrategy
 
             if (!empty($results) && !empty($results->access_token)) {
                 $userinfo = $this->userinfo($results->access_token);
-
+                //eval(\psy\sh());
                 $this->auth = array(
-                    'uid' => $userinfo['id'],
+                    'uid' => $userinfo['sub'],
                     'info' => array(),
                     'credentials' => array(
                         'token' => $results->access_token,
@@ -107,7 +108,17 @@ class authentikStrategy extends OpauthStrategy
                 if (!empty($results->refresh_token)) {
                     $this->auth['credentials']['refresh_token'] = $results->refresh_token;
                 }
-
+                $name = $userinfo['name'];
+                $name_parts = explode(" ", $name);
+                if(count($name_parts) > 1) {
+                    $lastname = array_pop($name_parts);
+                    $firstname = implode(" ", $name_parts);
+                    $userinfo['given_name'] = $firstname;
+                    $userinfo['surname'] = $lastname;
+                } else {
+                    $userinfo['surname'] = $name;
+                }
+                
                 $this->mapProfile($userinfo, 'name', 'first_name');
                 $this->mapProfile($userinfo, 'email', 'email');
                 $this->mapProfile($userinfo, 'given_name', 'first_name');
@@ -145,7 +156,7 @@ class authentikStrategy extends OpauthStrategy
      */
     private function userinfo($access_token)
     {
-        $userinfo = $this->serverGet($this->strategy['user_info_endpoint'],
+        $userinfo = $this->serverGet($this->strategy['login_url'].$this->strategy['user_info_endpoint'],
             array('access_token' => $access_token), null, $headers);
         if (!empty($userinfo)) {
             return $this->recursiveGetObjectVars(json_decode($userinfo));

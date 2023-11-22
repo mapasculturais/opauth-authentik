@@ -1,14 +1,19 @@
 {
-	"name": "opauth/logincidadao",
-	"description": "Login Cidadão strategy for Opauth",
-	"keywords": ["authentication","auth","logincidadao"],
+	"name": "opauth/authentik",
+	"description": "Authentik strategy for Opauth",
+	"keywords": ["authentication","auth","authentik"],
 	"homepage": "http://opauth.org",
 	"license": "MIT",
 	"authors": [
 		{
 			"name": "Rafael Freitas",
 			"email": "rafael@hacklab.com.br"
+		},
+		{
+			"name": "Jacson Passold",
+			"email": "jacson@hacklab.com.br"
 		}
+
 	],
 	"require": {
 		"php": ">=5.2.0",
